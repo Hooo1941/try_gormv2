@@ -36,6 +36,7 @@ func (service *CreateCommentService) Create(user *models.User) *serializers.Resp
 		RootID:    service.RootID,
 		Content:   service.Content,
 	}
+
 	if err := models.DB.Create(&comment).Error; err != nil {
 		return &serializers.Response{
 			Status:  e.CREATE_ERROR,
@@ -66,6 +67,6 @@ func (service *CreateCommentService) Create(user *models.User) *serializers.Resp
 	return &serializers.Response{
 		Status:  e.SUCCESS,
 		Message: e.GetMsg(e.SUCCESS),
-		Data:    serializers.BuildComment(comment),
+		Data:    serializers.BuildComment(comment, nil),
 	}
 }

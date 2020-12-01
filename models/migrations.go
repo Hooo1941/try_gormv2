@@ -6,7 +6,7 @@ import "comment/util"
 
 func migration() {
 	// 自动迁移模式
-	err := DB.AutoMigrate(&article{}, &User{}, &Comment{}, &Star{})
+	err := DB.AutoMigrate(&Article{}, &User{}, &Comment{}, &Star{})
 	if err != nil {
 		util.Log().Panic("创建数据库不成功", err)
 	}

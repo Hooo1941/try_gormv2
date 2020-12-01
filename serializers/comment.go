@@ -24,6 +24,8 @@ type ReplySerializer struct {
 	RootID    uint           `json:"root_id"`
 	Content   string         `json:"content"`
 	CreatedAt string         `json:"created_at"`
+	LikeCount uint              `json:"like_count"`
+	IsLike    bool              `json:"is_like"`
 }
 
 func BuildReply(item models.Comment) ReplySerializer {
@@ -38,10 +40,10 @@ func BuildReply(item models.Comment) ReplySerializer {
 	}
 }
 
-func BuildComment(item models.Comment) CommentSerializer {
+func BuildComment(item models.Comment, reply []models.Comment) CommentSerializer {
 	var replys []ReplySerializer
-	if len(item.Replys) != 0 {
-		for _, reply := range item.Replys {
+	if len(reply) != 0 {
+		for _, reply := range reply {
 			replys = append(replys, BuildReply(reply))
 		}
 	}
@@ -57,10 +59,10 @@ func BuildComment(item models.Comment) CommentSerializer {
 	}
 }
 
-func BuildComments(items []models.Comment) []CommentSerializer {
+func BuildComments(items []models.Comment, replys [][]models.Comment) []CommentSerializer {
 	var comments []CommentSerializer
-	for _, item := range items {
-		comments = append(comments, BuildComment(item))
+	for i, item := range items {
+		comments = append(comments, BuildComment(item, replys[i]))
 	}
 	return comments
 }
